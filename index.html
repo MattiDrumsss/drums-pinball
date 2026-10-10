@@ -18,7 +18,7 @@ body{background:var(--bg);color:var(--fg);font-family:'Segoe UI',system-ui,sans-
 #pages{flex:1;overflow-y:auto;padding:0 14px 24px;touch-action:pan-y}
 .pg{display:none;max-width:760px;margin:0 auto}.pg.on{display:block;animation:up .35s both}
 @keyframes up{from{opacity:0;transform:translateY(18px)}}
-.pg h1{font:900 clamp(30px,9vw,58px) Orbitron,system-ui;letter-spacing:.05em;text-align:center;margin-top:6px;background:linear-gradient(90deg,var(--a),var(--b),var(--a));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite;filter:drop-shadow(0 0 16px var(--a))}
+.pg h1{font:900 clamp(26px,7.5vw,42px) Orbitron,system-ui;letter-spacing:.05em;text-align:center;margin-top:6px;background:linear-gradient(90deg,var(--a),var(--b),var(--a));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite;filter:drop-shadow(0 0 16px var(--a))}
 @keyframes sh{to{background-position:200%}}
 .sub{text-align:center;font-size:11px;letter-spacing:.3em;opacity:.7;margin:0 0 16px}
 .pg h2{font:700 12px Orbitron,system-ui;letter-spacing:.16em;color:var(--a);margin:24px 2px 10px;text-transform:uppercase}
@@ -46,7 +46,7 @@ input[type=range]{accent-color:var(--b);width:120px}input[type=checkbox]{accent-
 #themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
 #themes button{all:unset;cursor:pointer;display:grid;gap:7px;justify-items:center;padding:12px 4px;border-radius:16px;border:1px solid var(--bd);background:var(--card);font-size:12px}
 #themes i{width:40px;height:40px;border-radius:50%}#themes button.on{border-color:var(--a);box-shadow:0 0 18px color-mix(in srgb,var(--a) 50%,transparent)}
-#shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+#shop{display:block}
 .bc{display:grid;gap:5px;justify-items:center;align-content:start;text-align:center;padding:14px 8px;border-radius:18px;border:1px solid var(--bd);background:var(--card);cursor:pointer;transition:.2s}
 .bc .bp{width:50px;height:50px;border-radius:50%;box-shadow:0 0 18px var(--a);animation:fl2 1.6s ease-in-out infinite alternate}
 .bc small{font-size:11px;opacity:.72;min-height:44px;line-height:1.3}
@@ -60,7 +60,7 @@ input[type=range]{accent-color:var(--b);width:120px}input[type=checkbox]{accent-
 #pLv{font-size:12px;color:var(--a);margin-bottom:6px}.xp{height:10px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden}.xp i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));transition:width .6s}#xpt{opacity:.6;font-size:11px}
 #avl{display:flex;flex-wrap:wrap;gap:8px}#avl button{all:unset;cursor:pointer;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:var(--card);border:1px solid var(--bd);transition:.2s}#avl button.on{border-color:var(--a);box-shadow:0 0 16px var(--a);transform:scale(1.1)}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:14px;border-radius:18px;background:var(--card);border:1px solid var(--bd);display:grid;gap:2px}.stat span{font-size:22px}.stat b{font:700 17px Orbitron,system-ui}.stat small{opacity:.65;font-size:11px}
-#tros{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.tro{padding:10px 8px;text-align:center;border-radius:16px;border:1px solid var(--bd);background:var(--card);filter:grayscale(.8);opacity:.75}.tro.on{filter:none;opacity:1;border-color:#ffd40088}.tro span{font-size:26px;display:block}.tro b{font-size:12px;display:block;margin:2px 0}.tro small{font-size:10px;display:block;opacity:.75;line-height:1.3}.tro em{font-style:normal;font-size:11px;color:var(--coin);display:block;margin-top:5px}.xp.mini{height:6px;margin:6px 4px 3px}
+#tros{display:block}.tro{padding:10px 8px;text-align:center;border-radius:16px;border:1px solid var(--bd);background:var(--card);filter:grayscale(.8);opacity:.75}.tro.on{filter:none;opacity:1;border-color:#ffd40088}.tro span{font-size:26px;display:block}.tro b{font-size:12px;display:block;margin:2px 0}.tro small{font-size:10px;display:block;opacity:.75;line-height:1.3}.tro em{font-style:normal;font-size:11px;color:var(--coin);display:block;margin-top:5px}.xp.mini{height:6px;margin:6px 4px 3px}
 #rec div{display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px dashed var(--bd)}#rec div:last-child{border:0}#rec b{color:var(--b)}
 .how{font-size:12px;opacity:.7;line-height:1.7;margin:18px 2px}
 #nav{display:flex;justify-content:space-around;padding:6px 10px calc(8px + env(safe-area-inset-bottom,0px));background:rgba(8,8,30,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--bd)}
@@ -72,11 +72,11 @@ input[type=range]{accent-color:var(--b);width:120px}input[type=checkbox]{accent-
 #hS{font-size:clamp(20px,6vw,32px);font-weight:900;color:var(--a);text-shadow:0 0 16px var(--a)}
 .hr{text-align:right;font-size:12px;color:var(--b);display:grid;gap:3px;justify-items:end}.hr span{margin-left:7px}.hr .chip{padding:3px 9px;font-size:13px}
 #bPa{all:unset;cursor:pointer;font-size:18px;padding:6px 9px;border:1px solid #fff3;border-radius:10px}
-#stage{flex:1;display:flex;align-items:center;justify-content:center;perspective:1000px;min-height:0;overflow:hidden}
-#tbl{transform-origin:50% 90%;border-radius:18px;box-shadow:0 0 70px color-mix(in srgb,var(--a) 45%,transparent),0 40px 80px #000;border:2px solid rgba(255,255,255,.14)}
-#cv{width:100%;height:100%;display:block;border-radius:16px}
-#ctl{display:none;gap:8px;padding:6px 10px calc(10px + env(safe-area-inset-bottom,0px))}
-#ctl button{all:unset;flex:1;text-align:center;padding:18px 0;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid var(--a);font:700 20px Orbitron,system-ui;touch-action:none;box-shadow:0 0 14px color-mix(in srgb,var(--a) 30%,transparent)}
+#stage{flex:1;display:flex;align-items:flex-start;justify-content:center;perspective:1300px;min-height:0;overflow:hidden}
+#tbl{transform-origin:50% 90%;margin:auto 0;overflow:hidden;border-radius:18px;box-shadow:0 0 70px color-mix(in srgb,var(--a) 45%,transparent),0 40px 80px #000;border:2px solid rgba(255,255,255,.14)}
+#cv{width:104.5%;height:103.5%;margin:-1% 0 0 -2.25%;display:block;border-radius:16px}
+#ctl{display:none;gap:8px;padding:4px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+#ctl button{all:unset;flex:1;text-align:center;padding:14px 0;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid var(--a);font:700 20px Orbitron,system-ui;touch-action:none;box-shadow:0 0 14px color-mix(in srgb,var(--a) 30%,transparent)}
 #ctl button:active{background:color-mix(in srgb,var(--a) 35%,transparent)}#ctl #bP{flex:1.2;border-color:var(--b);font-size:14px}
 @media(pointer:coarse),(max-width:820px){#ctl{display:flex}}
 @media(max-height:520px){#ctl button{padding:9px 0}#hud small{display:none}}
@@ -93,6 +93,23 @@ input[type=range]{accent-color:var(--b);width:120px}input[type=checkbox]{accent-
 .ev{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:18px;border:1px solid var(--bd);background:var(--card);margin-top:14px}.ev.on{border-color:var(--b);background:linear-gradient(135deg,color-mix(in srgb,var(--b) 22%,transparent),color-mix(in srgb,var(--a) 14%,transparent));box-shadow:0 0 22px color-mix(in srgb,var(--b) 40%,transparent)}.evi{font-size:30px}.ev>div{flex:1;min-width:0}.ev b{font-size:14px}.ev small{display:block;opacity:.75;font-size:11px;line-height:1.4;margin-top:2px}.ev .btn{margin:0}
 .md{position:fixed;inset:0;z-index:80;background:rgba(3,3,15,.82);backdrop-filter:blur(6px);display:grid;place-items:center;padding:20px}.mdc{max-width:380px;width:100%;background:#12143a;border:1px solid var(--bd);border-radius:22px;padding:20px;text-align:center;line-height:1.5;font-size:14px}.mdc h3{font:900 17px Orbitron,system-ui;color:var(--a);margin-bottom:8px}.mdb{display:grid;gap:8px;margin-top:16px}.mdb button{all:unset;cursor:pointer;padding:12px;border-radius:14px;border:1px solid var(--bd);font-weight:700;font-size:13px}.mdb button.p{background:linear-gradient(90deg,var(--a),var(--b));color:#000;border:0}
 .in{width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--bd);background:rgba(0,0,0,.4);color:#fff;font:600 14px 'Segoe UI',system-ui;outline:none;margin:6px 0;user-select:text;-webkit-user-select:text}.in:focus{border-color:var(--a)}.am{font-size:12px;min-height:18px;padding:4px 2px;line-height:1.4}
+details.ac{border:1px solid var(--bd);background:var(--card);border-radius:18px;margin-top:10px;overflow:hidden}
+details.ac>summary{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;list-style:none;font-size:14px}
+details.ac>summary::-webkit-details-marker{display:none}
+details.ac>summary .aci{font-size:20px;width:26px;text-align:center}
+details.ac>summary b{flex:1}
+details.ac>summary em{font-style:normal;font-size:11px;color:var(--a);max-width:46%;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.ac>summary::after{content:'▾';opacity:.6;transition:transform .2s}
+details.ac[open]>summary::after{transform:rotate(180deg)}
+details.ac[open]>summary{border-bottom:1px solid var(--bd)}
+.acb{padding:14px;animation:up .25s both}
+details.ac.in2{background:rgba(0,0,0,.2);border-radius:14px}details.ac.in2>summary{padding:11px 12px;font-size:13px}.acb.tg,.acb.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:12px}
+.eqc{display:flex;gap:14px;align-items:center;padding:14px;border-radius:20px;border:1px solid var(--a);background:linear-gradient(135deg,color-mix(in srgb,var(--a) 14%,transparent),transparent),var(--card);margin-bottom:8px}.eqc .bp{width:56px;height:56px;border-radius:50%;flex:none;box-shadow:0 0 22px var(--a)}.eqc small{display:block;font-size:10px;letter-spacing:.14em;opacity:.7}.eqc b{font:700 18px Orbitron,system-ui}.eqc span{display:block;font-size:12px;opacity:.75;margin-top:2px}
+#wel{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) 18px calc(20px + env(safe-area-inset-bottom,0px));background:radial-gradient(circle at 50% 15%,color-mix(in srgb,var(--a) 24%,transparent),transparent 55%),radial-gradient(circle at 85% 95%,color-mix(in srgb,var(--b) 24%,transparent),transparent 55%),var(--bg)}
+.wc{width:100%;max-width:380px;text-align:center}.wlogo{font-size:64px;animation:fl2 1.6s ease-in-out infinite alternate;filter:drop-shadow(0 0 18px var(--a))}
+.wt{font:900 clamp(26px,8.5vw,38px) Orbitron,system-ui;letter-spacing:.05em;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 2px}
+.wtabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:14px;background:rgba(0,0,0,.35);border:1px solid var(--bd);margin:18px 0 10px}.wtabs button{all:unset;cursor:pointer;padding:10px;border-radius:10px;font-weight:700;font-size:13px}.wtabs button.on{background:var(--a);color:#001}
+#wGo{display:block;width:100%;margin-top:6px}.wg{all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;text-align:center;margin-top:14px;padding:12px;border-radius:14px;border:1px solid var(--bd);font-size:13px;font-weight:600}.wn{font-size:11px;opacity:.65;line-height:1.5;margin-top:16px}
 #flash{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:0;background:radial-gradient(circle,#fff8,var(--b) 80%)}
 </style></head><body>
 <div id="floor"></div><div class="blob"></div><div class="blob b2"></div>
@@ -101,31 +118,44 @@ input[type=range]{accent-color:var(--b);width:120px}input[type=checkbox]{accent-
 <main id="pages">
 <section class="pg on" id="pg-play"><h1>DRUMS PINBALL</h1><div class="sub f">🥁 ARCADE · NEON · 3D</div>
 <div class="hero"><div class="hm"><div class="ic" id="hIcon"></div><div><b class="f" id="hName"></b><small id="hDesc"></small></div></div>
-<div class="chips"><button class="ch" id="chMap">🗺️ <b id="cMap"></b></button><button class="ch" data-go="shop">🎱 <b id="cBall"></b></button><button class="ch" data-go="set">🎨 <b id="cTh"></b></button><button class="ch" data-go="set">❤️ <b id="cBl"></b> palline</button><button class="ch" data-go="set">🎚️ <b id="cDf"></b></button></div>
+<div class="chips"><button class="ch" id="chMode">🎮 Cambia modalità</button><button class="ch" id="chMap">🗺️ <b id="cMap"></b></button><button class="ch" data-go="shop">🎱 <b id="cBall"></b></button><button class="ch" data-go="set">🎨 <b id="cTh"></b></button><button class="ch" data-go="set">❤️ <b id="cBl"></b> palline</button><button class="ch" data-go="set">🎚️ <b id="cDf"></b></button></div>
 <button class="btn" id="play">▶ GIOCA</button></div>
-<div id="evb"></div><h2>Missioni di oggi <span id="dqs"></span></h2><div id="dq"></div><h2>Scegli la mappa</h2><div id="maps"></div><h2>Scegli la modalità</h2><div id="modes"></div></section>
-<section class="pg" id="pg-shop"><div class="pt">NEGOZIO</div><p class="lead">Ogni cosa che fai in partita ti fa guadagnare monete <i class="cn"></i>. Spendile per sbloccare palline con poteri speciali: le più potenti costano di più, quindi risparmia! Tocca una pallina per comprarla o equipaggiarla.</p><div id="shop"></div></section>
+<div id="evb"></div>
+<details class="ac" data-id="dqa" open><summary><span class="aci">🎯</span><b>Missioni di oggi</b><em id="dqs"></em></summary><div class="acb"><div id="dq"></div></div></details>
+<details class="ac" data-id="mp"><summary><span class="aci">🗺️</span><b>Mappa</b><em id="sMp"></em></summary><div class="acb"><div id="maps"></div></div></details>
+<details class="ac" data-id="md"><summary><span class="aci">🎮</span><b>Modalità</b><em id="sMd"></em></summary><div class="acb"><div id="modes"></div></div></details></section>
+<section class="pg" id="pg-shop"><div class="pt">NEGOZIO</div><p class="lead">Ogni cosa che fai in partita ti fa guadagnare monete <i class="cn"></i>. Spendile per sbloccare palline con poteri speciali. Tocca una pallina per comprarla o equipaggiarla.</p><div id="eqb"></div><div id="shop"></div></section>
 <section class="pg" id="pg-lb"><div class="pt">CLASSIFICA</div><p class="lead">I record di tutti i giocatori, modalità per modalità. Gioca una partita per entrare in classifica!</p><div id="lbm"></div><div id="lbl"></div><div id="lbs"></div><div class="chips" style="justify-content:center"><button class="ch" id="lbr">🔄 Aggiorna</button></div></section>
 <section class="pg" id="pg-prof"><div class="pc"><i id="pAv">🥁</i><div style="flex:1;min-width:0"><input id="name" maxlength="14" placeholder="Il tuo nome" autocomplete="off"><div id="pLv" class="f"></div><div class="xp"><i id="xpb"></i></div><small id="xpt"></small></div></div>
-<h2>Scegli il tuo avatar</h2><div id="avl"></div>
-<h2>Statistiche</h2><div id="stats" class="stats"></div>
-<h2>Trofei · <span id="trn"></span></h2><div id="tros"></div>
-<h2>Record (modalità e mappe)</h2><div class="card" id="rec"></div><h2>Account e cloud ☁️</h2><div class="card" id="acc"><div id="acOut"><p class="lead" style="font-size:12px;margin:10px 0 4px">Crea un account gratuito per ritrovare monete, palline e record su qualsiasi telefono o computer. Bastano un nome e una password, niente email.</p><input id="au" class="in" placeholder="Nome account (3-14 caratteri)" maxlength="14" autocomplete="username" autocapitalize="off"><input id="ap" class="in" type="password" placeholder="Password (almeno 6 caratteri)" maxlength="64" autocomplete="current-password"><div class="bkb"><button id="aReg">✨ Crea account</button><button id="aLog">🔑 Accedi</button></div><div id="acMsg" class="am"></div></div><div id="acIn" style="display:none"><p class="lead" style="margin:10px 0">Connesso come <b id="acN"></b> ✅<br><small id="acT"></small></p><div class="bkb"><button id="aSave">☁️ Salva ora</button><button id="aLoad">⬇️ Scarica</button><button id="aOut">🚪 Esci</button></div><div id="acMsg2" class="am"></div></div></div><h2>Backup progressi</h2><div id="stw">⚠️ Questo browser non permette di salvare i dati (navigazione privata?). Usa il codice di backup qui sotto per non perdere i progressi.</div><p class="lead" style="font-size:12px">I progressi sono salvati su questo dispositivo. Per spostarli su un altro telefono o computer crea il codice e incollalo lì.</p><textarea id="bk" placeholder="Il codice di backup compare qui"></textarea><div class="bkb"><button id="bkc">📋 Crea codice</button><button id="bkr">♻️ Ripristina</button></div></section>
+<details class="ac" data-id="avt"><summary><span class="aci">🖼️</span><b>Avatar e foto</b><em id="avSum"></em></summary><div class="acb"><div class="bkb"><button id="phB">📷 Scegli una foto</button><button id="phX">🗑️ Rimuovi foto</button></div><input type="file" id="phF" accept="image/*" style="display:none"><p class="lead" style="font-size:12px;margin:10px 0">La foto resta sul tuo dispositivo (e nel cloud, se hai un account). In classifica compare solo l'emoji.</p><div id="avl"></div></div></details>
+<details class="ac" data-id="st" open><summary><span class="aci">📊</span><b>Statistiche</b></summary><div class="acb"><div id="stats" class="stats"></div></div></details>
+<details class="ac" data-id="tr"><summary><span class="aci">🏆</span><b>Trofei</b><em id="trn"></em></summary><div class="acb"><div id="tros"></div></div></details>
+<details class="ac" data-id="rc"><summary><span class="aci">📈</span><b>Record</b></summary><div class="acb"><div id="rec"></div></div></details>
+<details class="ac" data-id="acc"><summary><span class="aci">☁️</span><b>Account e cloud</b><em id="acS"></em></summary><div class="acb" id="acc"><div id="acOut"><p class="lead" style="font-size:12px;margin:0 0 4px">Crea un account gratuito per ritrovare monete, palline e record su qualsiasi telefono o computer. Bastano un nome e una password, niente email.</p><input id="au" class="in" placeholder="Nome account (3-14 caratteri)" maxlength="14" autocomplete="username" autocapitalize="off"><input id="ap" class="in" type="password" placeholder="Password (almeno 6 caratteri)" maxlength="64" autocomplete="current-password"><div class="bkb"><button id="aReg">✨ Crea account</button><button id="aLog">🔑 Accedi</button></div><div id="acMsg" class="am"></div></div><div id="acIn" style="display:none"><p class="lead" style="margin:0 0 10px">Connesso come <b id="acN"></b> ✅<br><small id="acT"></small></p><div class="bkb"><button id="aSave">☁️ Salva ora</button><button id="aLoad">⬇️ Scarica</button><button id="aOut">🚪 Esci</button></div><div id="acMsg2" class="am"></div></div></div></details>
+<details class="ac" data-id="bkp"><summary><span class="aci">💾</span><b>Backup progressi</b></summary><div class="acb"><div id="stw">⚠️ Questo browser non permette di salvare i dati (navigazione privata?). Usa il codice di backup qui sotto per non perdere i progressi.</div><p class="lead" style="font-size:12px">I progressi sono salvati su questo dispositivo. Per spostarli su un altro telefono o computer crea il codice e incollalo lì.</p><textarea id="bk" placeholder="Il codice di backup compare qui"></textarea><div class="bkb"><button id="bkc">📋 Crea codice</button><button id="bkr">♻️ Ripristina</button></div></div></details></section>
 <section class="pg" id="pg-set"><div class="pt">IMPOSTAZIONI</div>
-<h2>Partita</h2><div class="card">
+<details class="ac" data-id="s1" open><summary><span class="aci">🎮</span><b>Partita</b></summary><div class="acb">
 <div class="row"><span>Difficoltà<small>Cambia gravità e dimensione dei flipper</small></span><div class="seg" data-k="diff" data-o='[["Facile",0],["Normale",1],["Pro",2]]'></div></div>
-<div class="row"><span>Palline per partita<small>Non vale per "Contro il tempo" e "Una vita"</small></span><span><input type="range" min="1" max="5" data-k="balls"> <b data-ov="balls"></b></span></div></div>
-<h2>Tema del tavolo</h2><div id="themes"></div>
-<h2>Grafica e suoni</h2><div class="card">
+<div class="row"><span>Palline per partita<small>Non vale per "Contro il tempo" e "Una vita"</small></span><span><input type="range" min="1" max="5" data-k="balls"> <b data-ov="balls"></b></span></div></div></details>
+<details class="ac" data-id="s2"><summary><span class="aci">🎨</span><b>Tema del tavolo</b><em id="sTh"></em></summary><div class="acb"><div id="themes"></div></div></details>
+<details class="ac" data-id="s3"><summary><span class="aci">✨</span><b>Grafica e suoni</b></summary><div class="acb">
+<div class="row">Zoom del tavolo <span><input type="range" min="95" max="115" data-k="zoom"> <b data-ov="zoom"></b>%</span></div>
 <div class="row">Inclinazione 3D <span><input type="range" min="0" max="40" data-k="tilt"> <b data-ov="tilt"></b>°</span></div>
 <div class="row">Suoni <input type="checkbox" data-k="snd"></div>
 <div class="row">Particelle ed effetti <input type="checkbox" data-k="fx"></div>
 <div class="row">Scia della pallina <input type="checkbox" data-k="trail"></div>
-<div class="row">Vibrazione <input type="checkbox" data-k="vib"></div><div class="row"><span>Classifica online<small>Invia nome, avatar e record alla classifica generale</small></span><input type="checkbox" data-k="online"></div></div><h2>App sul telefono 📲</h2><div class="card"><div class="row"><span>Installa DRUMS PINBALL<small id="instT">Aggiungila alla schermata Home: si apre a schermo intero e funziona anche senza internet.</small></span><button class="ch" id="inst" style="display:none">Installa</button></div></div>
-<div class="how">⌨️ <b>← →</b> (o Z / M) flipper · <b>SPAZIO</b> tieni e rilascia per lanciare · <b>P</b> pausa<br>📱 tocca sinistra/destra dello schermo per i flipper, tieni <b>LANCIA</b> e rilascia.<br>🥁 Accendi le lettere D-R-U-M-S e i 3 bersagli per moltiplicatori e bonus. Ogni pallina ha 8 secondi di Ball Save.</div></section>
+<div class="row">Vibrazione <input type="checkbox" data-k="vib"></div></div></details>
+<details class="ac" data-id="s4"><summary><span class="aci">🌐</span><b>Online</b></summary><div class="acb"><div class="row"><span>Classifica online<small>Invia nome, emoji e record alla classifica generale</small></span><input type="checkbox" data-k="online"></div></div></details>
+<details class="ac" data-id="s5"><summary><span class="aci">📲</span><b>App sul telefono</b></summary><div class="acb"><div class="row"><span>Installa DRUMS PINBALL<small id="instT">Aggiungila alla schermata Home: si apre a schermo intero e funziona anche senza internet.</small></span><button class="ch" id="inst" style="display:none">Installa</button></div></div></details>
+<details class="ac" data-id="s6"><summary><span class="aci">❓</span><b>Come si gioca</b></summary><div class="acb"><div class="how" style="margin:0">⌨️ <b>← →</b> (o Z / M) flipper · <b>SPAZIO</b> tieni e rilascia per lanciare · <b>P</b> pausa<br>📱 tocca sinistra/destra dello schermo per i flipper, tieni <b>LANCIA</b> e rilascia.<br>🥁 Accendi le lettere D-R-U-M-S e i 3 bersagli per moltiplicatori e bonus. Ogni pallina ha 8 secondi di Ball Save.</div></div></details></section>
 </main>
 <nav id="nav"><button data-p="play" class="on"><span>🎮</span>Gioca</button><button data-p="shop"><span>🛒</span>Negozio</button><button data-p="lb"><span>🏆</span>Classifica</button><button data-p="prof"><span>👤</span>Profilo</button><button data-p="set"><span>⚙️</span>Impostazioni</button></nav>
 </div>
+<div id="wel"><div class="wc"><div class="wlogo">🥁</div><div class="wt">DRUMS PINBALL</div><div class="sub f">ARCADE · NEON · 3D</div>
+<div class="wtabs"><button id="wtL" class="on">Accedi</button><button id="wtR">Crea account</button></div>
+<input id="wu" class="in" placeholder="Nome account" maxlength="14" autocomplete="username" autocapitalize="off"><input id="wp" class="in" type="password" placeholder="Password" maxlength="64" autocomplete="current-password">
+<div id="wMsg" class="am"></div><button class="btn" id="wGo">ACCEDI</button><button class="wg" id="wGuest">Continua senza account</button>
+<p class="wn">Con un account salvi monete, palline e record nel cloud e compari in classifica. Niente email: bastano nome e password.</p></div></div>
 
 <div id="game"><div id="hud"><div><b id="hN"></b><small id="hM"></small></div><div style="text-align:center"><div id="hS">0</div><small id="hCh"></small></div><div class="hr"><div id="hCw" class="chip"><i class="cn"></i> <b id="hC">0</b></div><div><span id="hB"></span><span id="hX"></span><span id="hT"></span></div></div><button id="bPa">⏸</button></div>
 <div id="stage"><div id="tbl"><canvas id="cv"></canvas></div></div>
@@ -199,7 +229,7 @@ m.lt.forEach(p=>{c.fillStyle='rgba(255,255,255,.4)';c.beginPath();c.arc(p[0],p[1
 (m.pt||[]).forEach((q,i)=>{c.strokeStyle=i?T[1]:T[0];c.lineWidth=6;[0,2].forEach(k=>{c.beginPath();c.arc(q[k],q[k+1],16,0,7);c.stroke()})});
 c.strokeStyle=T[1];c.lineWidth=14;c.beginPath();c.moveTo(112,630);c.lineTo(165,659);c.moveTo(260,630);c.lineTo(207,659);c.stroke()}
 const TH={neon:['#00f0ff','#ff2bd6','#1a0b4a',1,'r','Neon'],ice:['#8fe3ff','#ffffff','#0b2a4a',1,'c','Ghiaccio'],lava:['#ff5a1f','#ffd000','#4a0f08',-1,'r','Lava'],matrix:['#00ff66','#b6ffcc','#06301a',1,'r','Matrix'],sunset:['#ff7ae0','#ffb347','#3a0f3f',-1,'c','Tramonto'],ocean:['#33ccff','#00ffc8','#02304f',-1,'c','Oceano'],toxic:['#c6ff00','#00e5ff','#142a00',1,'r','Tossico'],candy:['#ff8ad8','#8affea','#35124f',1,'c','Candy'],gold:['#ffd24a','#fff1b0','#3a2a00',-1,'r','Oro'],halloween:['#ff7a00','#b44bff','#1a0a2a',-1,'r','Halloween'],xmas:['#ff4d4d','#3dff7a','#0a2a14',1,'c','Natale'],summer:['#ffd23f','#ff6b35','#05455a',-1,'c','Estate'],love:['#ff4d8d','#ffd0e6','#3a0a20',-1,'c','Cuori']};
-let S={name:'GIOCATORE',mode:'classic',diff:1,balls:3,theme:'neon',tilt:20,snd:1,fx:1,trail:1,vib:1,coins:100,own:['std'],ball:'std',av:'🥁',map:'arena',online:1,pid:'',pf:{}},HS={},G=null,GO=null;
+let S={name:'GIOCATORE',mode:'classic',diff:1,balls:3,theme:'neon',tilt:14,zoom:104,snd:1,fx:1,trail:1,vib:1,coins:100,own:['std'],ball:'std',av:'🥁',map:'arena',online:1,pid:'',guest:0,photo:'',ao:{},pf:{}},HS={},G=null,GO=null;
 try{Object.assign(S,JSON.parse(localStorage.getItem('pn_s')||'{}'));HS=JSON.parse(localStorage.getItem('pn_h')||'{}')}catch(e){}
 if(S.ovp){Object.assign(S,S.ovp);S.ovp=null}if(!TH[S.theme])S.theme='neon';if(!MAPS.some(m=>m.id==S.map))S.map='arena';if(!/^[a-z0-9]{8,24}$/.test(S.pid))S.pid=(Math.random().toString(36).slice(2,12)+Date.now().toString(36)).slice(0,20);
 const P=S.pf=Object.assign({games:0,tot:0,best:0,coins:0,sec:0,drums:0,maxb:1,ach:[],mp:[],sent:{},hits:0,tele:0,saves:0,rh:0,cbm:0,mm:1,pm:{},pb:{},mx:0,bk:0,sp:0,dqn:0,bst:0,evn:0,cha:0,chw:0},S.pf);
@@ -289,12 +319,12 @@ function go(p){$$('.pg').forEach(x=>x.classList.toggle('on',x.id=='pg-'+p));$$('
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(b)go(b.dataset.p)};$('#tp').onclick=()=>go('prof');
 $$('.ch[data-go]').forEach(c=>c.onclick=()=>go(c.dataset.go));
 $('#modes').innerHTML=MODES.map(m=>`<button class="m" data-id="${m.id}"><span class="mi">${m.i}</span><b>${m.n}</b><small>${m.d}</small><em>${'★'.repeat(m.lv)+'☆'.repeat(3-m.lv)} ${['Facile','Medio','Difficile'][m.lv-1]}</em></button>`).join('');
-$('#modes').onclick=e=>{const b=e.target.closest('.m');if(b){S.mode=b.dataset.id;ui();$('#pages').scrollTo({top:0,behavior:'smooth'})}};
-$('#maps').innerHTML=MAPS.map(m=>`<button class="mp" data-id="${m.id}"><canvas width="180" height="333"></canvas><b>${m.i} ${m.n}</b><small>${m.d}</small></button>`).join('');$('#maps').onclick=e=>{const b=e.target.closest('.mp');if(b){S.map=b.dataset.id;ui()}};$('#chMap').onclick=()=>$('#maps').scrollIntoView({behavior:'smooth',block:'center'});
+$('#modes').onclick=e=>{const b=e.target.closest('.m');if(b){S.mode=b.dataset.id;const d=$('details[data-id=md]');if(d)d.open=false;ui();$('#pages').scrollTo({top:0,behavior:'smooth'})}};
+$('#maps').innerHTML=MAPS.map(m=>`<button class="mp" data-id="${m.id}"><canvas width="180" height="333"></canvas><b>${m.i} ${m.n}</b><small>${m.d}</small></button>`).join('');$('#maps').onclick=e=>{const b=e.target.closest('.mp');if(b){S.map=b.dataset.id;const d=$('details[data-id=mp]');if(d)d.open=false;ui()}};const opn=id=>{const d=$('details[data-id='+id+']');d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'})};$('#chMap').onclick=()=>opn('mp');$('#chMode').onclick=()=>opn('md');
 $('#themes').innerHTML=Object.keys(TH).map(k=>`<button data-t="${k}"><i style="background:linear-gradient(135deg,${TH[k][0]},${TH[k][1]});box-shadow:0 0 14px ${TH[k][0]}"></i>${TH[k][5]}</button>`).join('');
 $('#themes').onclick=e=>{const b=e.target.closest('button');if(b){S.theme=b.dataset.t;ui()}};
 $('#avl').innerHTML=AVS.map(a=>`<button data-a="${a}">${a}</button>`).join('');
-$('#avl').onclick=e=>{const b=e.target.closest('button');if(b){S.av=b.dataset.a;ui()}};
+$('#avl').onclick=e=>{const b=e.target.closest('button');if(b){S.av=b.dataset.a;S.photo='';ui()}};
 $$('.seg').forEach(s=>{s.innerHTML=JSON.parse(s.dataset.o).map(o=>`<button data-v="${o[1]}">${o[0]}</button>`).join('');s.onclick=e=>{const b=e.target.closest('button');if(b){S[s.dataset.k]=isNaN(b.dataset.v)?b.dataset.v:+b.dataset.v;ui()}}});
 $$('input[data-k]').forEach(i=>i.oninput=()=>{S[i.dataset.k]=i.type=='checkbox'?+i.checked:+i.value;ui()});
 $('#name').oninput=e=>{S.name=e.target.value;$('#tn').textContent=S.name||'GIOCATORE';save()};
@@ -323,7 +353,7 @@ if(!d.all&&d.done.every(x=>x)){d.all=1;d.st=(d.ld==dqYest()?d.st:0)+1;d.ld=d.d;P
 if(n||d.all)wk()}
 function dqAdd(o){const p=dqToday().p;p.games+=o.games||0;p.hits+=o.hits||0;p.coins+=o.coins||0;p.drums+=o.drums||0;p.tele+=o.tele||0;p.sec+=(o.sec||0)/60;p.score=Math.max(p.score,o.score||0);p.combo=Math.max(p.combo,o.combo||0);p.mult=Math.max(p.mult,o.mult||1);dqCheck()}
 function dqRender(){const d=dqToday(),idx=dqPick(d.d),st=dqStreak(d),nx=d.all?st:(d.ld==dqYest()?d.st+1:1);
-$('#dqs').textContent=st?'🔥 serie '+st:'';
+$('#dqs').textContent=d.done.filter(x=>x).length+'/3'+(st?' · 🔥 '+st:'');
 $('#dq').innerHTML=idx.map((ix,i)=>{const m=DQT[ix],t=m.t[i],v=Math.min(m.v(d.p),t),ok=d.done[i];return `<div class="dq${ok?' ok':''}"><div class="dqh"><span>${ok?'✅':['🥉','🥈','🥇'][i]} ${m.n(t)}</span><em>+${fmt(m.r[i])} <i class="cn"></i></em></div><div class="xp mini"><i style="width:${Math.round(v/t*100)}%"></i></div><small>${fmt(Math.floor(v))} / ${fmt(t)}</small></div>`}).join('')+`<div class="dqb">${d.all?'🎉 Giornata completata! Torna domani per nuove missioni.':'Completa tutte e 3 le missioni per il bonus giornata: +'+fmt(500+100*Math.min(nx,10))+' monete. Nuove missioni ogni giorno.'}</div>`}
 // ---------- eventi a tempo ----------
 const MESI=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
@@ -378,15 +408,15 @@ async function cApi(a,body,tok){let r,d={};
 try{r=await fetch(CLN,{method:'POST',headers:Object.assign({'Content-Type':'application/json'},tok?{Authorization:'Bearer '+tok}:{}),body:JSON.stringify(Object.assign({a},body||{}))})}catch(e){throw new Error('Servizio non raggiungibile: controlla la connessione')}
 try{d=await r.json()}catch(e){}
 if(!r.ok){const er=new Error(d.error||'Servizio non disponibile');er.code=r.status;er.v=d.v;throw er}return d}
-function expS(){const c=JSON.parse(JSON.stringify(S));if(c.ovp)Object.assign(c,c.ovp);['ovp','tok','acc','cv','cs','sh'].forEach(k=>delete c[k]);return c}
+function expS(){const c=JSON.parse(JSON.stringify(S));if(c.ovp)Object.assign(c,c.ovp);['ovp','tok','acc','cv','cs','sh','guest','ao'].forEach(k=>delete c[k]);return c}
 const lvx=pf=>{const xp=(pf.tot||0)+(pf.games||0)*500;let l=1;while(xp>=l*l*1500)l++;return l};
 const sumTxt=(pf,s)=>'Liv. '+lvx(pf||{})+' · '+fmt((s&&s.coins)||0)+' monete · '+((pf&&pf.games)||0)+' partite';
 function cMsg(t,ok){['#acMsg','#acMsg2'].forEach(q=>{const e=$(q);e.textContent=t;e.style.color=ok?'#7dffb0':'#ff9a9a'})}
-function acRender(){const on=!!S.tok;$('#acOut').style.display=on?'none':'';$('#acIn').style.display=on?'':'none';if(on){$('#acN').textContent=S.acc;$('#acT').textContent=S.cs?'Ultimo salvataggio: '+new Date(S.cs).toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}):'Non ancora salvato'}}
+function acRender(){const on=!!S.tok;$('#acS').textContent=on?'✅ '+S.acc:'Non connesso';$('#acOut').style.display=on?'none':'';$('#acIn').style.display=on?'':'none';if(on){$('#acN').textContent=S.acc;$('#acT').textContent=S.cs?'Ultimo salvataggio: '+new Date(S.cs).toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}):'Non ancora salvato'}}
 function applyCloud(d){const keep={tok:S.tok,acc:S.acc,cs:S.cs};Object.assign(S,d.data.S);Object.assign(P,d.data.S.pf||{});S.pf=P;HS=d.data.HS||{};Object.assign(S,keep);S.cv=d.v;S.ovp=null;wd=S.coins;cHash=S.sh=hs(JSON.stringify({S:expS(),HS}));saveLocal();ui()}
 async function cSave(force){if(!S.tok||cLock||cBusy)return;const o={S:expS(),HS},hv=hs(JSON.stringify(o));if(!force&&hv===cHash)return;cBusy=1;
 try{const d=await cApi('save',{data:o,bv:S.cv||0},S.tok);S.cv=d.v;S.cs=d.t||Date.now();cHash=S.sh=hv;saveLocal();acRender()}
-catch(e){if(e.code==409){cBusy=0;cLock=1;try{const d=await cApi('load',{},S.tok);await cResolve(d,true)}catch(x){cLock=0}}else if(e.code==401){S.tok='';S.acc='';cMsg('Sessione scaduta: accedi di nuovo.');acRender()}}
+catch(e){if(e.code==409){cBusy=0;cLock=1;try{const d=await cApi('load',{},S.tok);await cResolve(d,true)}catch(x){cLock=0}}else if(e.code==401){S.tok='';S.acc='';cMsg('Sessione scaduta: accedi di nuovo.');S.guest=0;showWel();acRender()}}
 finally{cBusy=0}}
 function cSoon(){if(!S.tok||cLock)return;clearTimeout(cTimer);cTimer=setTimeout(()=>{if(Date.now()-cLast>60000){cLast=Date.now();cSave()}else cSoon()},8000)}
 async function cResolve(d,force){let i=0;const empty=!P.games&&S.own.length<=1&&S.coins<=100;
@@ -394,16 +424,17 @@ if(!d.data){cLock=0;S.cv=d.v||0;await cSave(true);return 1}
 if(force||!empty)i=await modal(`<h3>Progressi nel cloud ☁️</h3>Questo dispositivo:<br><b>${sumTxt(S.pf,S)}</b><br><br>Cloud:<br><b>${sumTxt(d.data.S.pf,d.data.S)}</b><br><br><small>Quale vuoi tenere? L'altro verrà sostituito.</small>`,['☁️ Usa quelli del cloud','📱 Tieni questo dispositivo']);
 if(i==0)applyCloud(d);else S.cv=d.v;
 cLock=0;saveLocal();if(i==1)await cSave(true);return i}
-async function cAuth(a){const u=$('#au').value.trim(),p=$('#ap').value;if(!u||!p){cMsg('Scrivi nome e password');return}cMsg('Un attimo…',1);
-try{const d=await cApi(a,{u,p});S.tok=d.tok;S.acc=d.u;$('#ap').value='';
-if(a=='register'){S.cv=0;cLock=0;await cSave(true);cMsg('Account creato! Da ora i progressi si salvano da soli.',1)}
-else{cLock=1;S.cv=0;const l=await cApi('load',{},S.tok);await cResolve(l,false);cMsg('Accesso eseguito ✅',1)}
-ui()}catch(e){cMsg(e.message)}}
-async function cInit(){if(!S.tok)return;cLock=1;try{const d=await cApi('load',{},S.tok);if(d.data&&d.v>(S.cv||0))await cResolve(d,true);else cLock=0}catch(e){if(e.code==401){S.tok='';S.acc=''}cLock=0}ui()}
+async function cAuth(a,us,ps,ms){us=us||'#au';ps=ps||'#ap';const msg=(t,ok)=>{cMsg(t,ok);if(ms){const e=$(ms);e.textContent=t;e.style.color=ok?'#7dffb0':'#ff9a9a'}};
+const u=$(us).value.trim(),p=$(ps).value;if(!u||!p){msg('Scrivi nome e password');return}msg('Un attimo…',1);
+try{const d=await cApi(a,{u,p});S.tok=d.tok;S.acc=d.u;$(ps).value='';if(S.name==='GIOCATORE')S.name=d.u.toUpperCase();
+if(a=='register'){S.cv=0;cLock=0;await cSave(true);msg('Account creato!',1)}
+else{cLock=1;S.cv=0;const l=await cApi('load',{},S.tok);await cResolve(l,false);msg('Accesso eseguito ✅',1)}
+S.guest=0;hideWel();ui()}catch(e){msg(e.message)}}
+async function cInit(){if(!S.tok)return;cLock=1;try{const d=await cApi('load',{},S.tok);if(d.data&&d.v>(S.cv||0))await cResolve(d,true);else cLock=0}catch(e){if(e.code==401){S.tok='';S.acc='';S.guest=0;showWel()}cLock=0}ui()}
 $('#aReg').onclick=()=>cAuth('register');$('#aLog').onclick=()=>cAuth('login');
 $('#aSave').onclick=async()=>{cMsg('Salvataggio…',1);await cSave(true);cMsg(S.tok?'Salvato ✅':'Non salvato',S.tok?1:0)};
 $('#aLoad').onclick=async()=>{try{const d=await cApi('load',{},S.tok);if(!d.data){cMsg("Nel cloud non c'è ancora nulla.");return}cLock=1;await cResolve(d,true);cMsg('Fatto ✅',1)}catch(e){cLock=0;cMsg(e.message)}};
-$('#aOut').onclick=async()=>{try{await cApi('logout',{},S.tok)}catch(e){}S.tok='';S.acc='';S.cv=0;S.sh=0;cLock=0;cMsg('');ui()};
+$('#aOut').onclick=async()=>{try{await cApi('logout',{},S.tok)}catch(e){}S.tok='';S.acc='';S.cv=0;S.sh=0;cLock=0;cMsg('');S.guest=0;ui();showWel()};
 const LBN='/api/leaderboard';let lbOff=0,lbMode='';
 const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function lbSubmit(mode,score){if(!S.online||Date.now()<lbOff)return;try{const r=await fetch(LBN,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({pid:S.pid,name:S.name,av:S.av,mode,score})});if(!r.ok)throw 0;P.sent[mode]=Math.max(P.sent[mode]||0,score);save()}catch(e){lbOff=Date.now()+300000}}
@@ -416,14 +447,39 @@ catch(e){$('#lbs').innerHTML='Classifica non disponibile al momento.<br><small>S
 $('#lbm').onclick=e=>{const b=e.target.closest('button');if(b){lbMode=b.dataset.m;lbLoad()}};$('#lbr').onclick=lbLoad;
 $('#bkc').onclick=()=>{P.bk=1;const c=btoa(unescape(encodeURIComponent(JSON.stringify({S:expS(),HS}))));$('#bk').value=c;if(navigator.clipboard)navigator.clipboard.writeText(c).then(()=>toast('Codice copiato','📋'),()=>toast('Seleziona e copia il codice','📋'));else toast('Seleziona e copia il codice','📋')};
 $('#bkr').onclick=()=>{try{const d=JSON.parse(decodeURIComponent(escape(atob($('#bk').value.trim()))));if(!d.S)throw 0;const keep={tok:S.tok,acc:S.acc,cv:S.cv,cs:S.cs,sh:S.sh};Object.assign(S,d.S);Object.assign(P,d.S.pf||{});S.pf=P;HS=d.HS||{};Object.assign(S,keep);S.ovp=null;wd=S.coins;ui();toast('Progressi ripristinati','✅')}catch(e){toast('Codice non valido','⚠️')}};
+// ---------- tendine, benvenuto, foto ----------
+const aoGet=(id,def)=>S.ao&&S.ao[id]!==undefined?S.ao[id]:def;
+document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.dataset.id){(S.ao=S.ao||{})[d.dataset.id]=d.open;saveLocal()}},true);
+$$('details[data-id]').forEach(d=>{const v=S.ao&&S.ao[d.dataset.id];if(v!==undefined)d.open=v});
+const ACAT=[['Partite e livello','🎮',['first','g10','g50','g200','lv5','lv10','long5','hour']],['Punteggi','⭐',['k10','k50','k250','k1m','k5m','t1m','t10m','t100m']],['Monete e negozio','💰',['earn1','earn2','rich','bil','sp1','sp2','buy1','own10','coll','try5']],['Sul tavolo','🥁',['h100','h1k','h10k','h50k','c30','c100','c300','dr','dr10','dr50','mb','mx5','rhy','tele','tele2','sv']],['Modalità e mappe','🗺️',['mode5','mall','exp','surv20','dark10','time30','multi50','sprint15','mirror10','wind10']],['Missioni, eventi e sfide','🎯',['dq10','dq50','st3','st7','ev1','ev10','ch1','chw']],['Account e sicurezza','☁️',['cloud','bk']]];
+function trCard(a){const on=P.ach.includes(a.id),cur=a.v?Math.min(a.v(),a.t):0;return `<div class="tro${on?' on':''}"><span>${a.i}</span><b>${a.n}</b><small>${a.d}</small>${a.t&&!on?`<div class="xp mini"><i style="width:${Math.round(cur/a.t*100)}%"></i></div><small>${fmt(cur)} / ${fmt(a.t)}</small>`:''}<em>${on?'✔ ':'+'}${fmt(a.r)} <i class="cn"></i></em></div>`}
+function trRender(){const used=new Set();ACAT.forEach(c=>c[2].forEach(i=>used.add(i)));const rest=ACH.filter(a=>!used.has(a.id)).map(a=>a.id),cats=rest.length?ACAT.concat([['Altro','✨',rest]]):ACAT;
+$('#tros').innerHTML=cats.map((c,i)=>{const L=c[2].map(id=>ACH.find(a=>a.id==id)).filter(Boolean),n=L.filter(a=>P.ach.includes(a.id)).length,id='tc'+i;return `<details class="ac in2" data-id="${id}"${aoGet(id,false)?' open':''}><summary><span class="aci">${c[1]}</span><b>${c[0]}</b><em>${n}/${L.length}</em></summary><div class="acb tg">${L.map(trCard).join('')}</div></details>`}).join('')}
+const SHG=[['Base','🟢',0,10000],['Avanzate','🔵',10001,100000],['Rare','🟣',100001,10000000],['Leggendarie','🟡',10000001,1e12]];
+function ballCard(b){const o=S.own.includes(b.id),e=S.ball==b.id;return `<div class="bc${e?' eq':''}${!o&&S.coins<b.p?' no':''}" data-id="${b.id}"><i class="bp" style="background:radial-gradient(circle at 32% 30%,${b.c[0]},${b.c[1]} 45%,${b.c[2]})"></i><b>${b.n}</b><small>${b.d}</small><em>${e?'✔ EQUIPAGGIATA':o?'EQUIPAGGIA':'<i class="cn"></i> '+fmt(b.p)}</em></div>`}
+function shopRender(){const q=BM[S.ball];$('#eqb').innerHTML=`<div class="eqc"><i class="bp" style="background:radial-gradient(circle at 32% 30%,${q.c[0]},${q.c[1]} 45%,${q.c[2]})"></i><div><small>PALLINA EQUIPAGGIATA</small><b>${q.n}</b><span>${q.d}</span></div></div>`;
+$('#shop').innerHTML=SHG.map((g,i)=>{const L=BALLS.filter(b=>b.p>=g[2]&&b.p<=g[3]),n=L.filter(b=>S.own.includes(b.id)).length,id='sg'+i;return `<details class="ac in2" data-id="${id}"${aoGet(id,i==0)?' open':''}><summary><span class="aci">${g[1]}</span><b>${g[0]}</b><em>${n}/${L.length}</em></summary><div class="acb sg">${L.map(ballCard).join('')}</div></details>`}).join('')}
+function paintAv(el){if(S.photo){el.textContent='';el.style.backgroundImage='url('+S.photo+')';el.style.backgroundSize='cover';el.style.backgroundPosition='center'}else{el.textContent=S.av;el.style.backgroundImage=''}}
+$('#phB').onclick=()=>$('#phF').click();
+$('#phX').onclick=()=>{S.photo='';ui()};
+$('#phF').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!/^image\//.test(f.type)){toast('Scegli un file immagine','⚠️');return}
+const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),N=112;c.width=c.height=N;const x=c.getContext('2d'),m=Math.min(im.width,im.height);x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,N,N);S.photo=c.toDataURL('image/jpeg',.8);ui();toast('Foto aggiornata','📷')};im.onerror=()=>toast('Foto non valida','⚠️');im.src=rd.result};rd.readAsDataURL(f);e.target.value=''};
+let wMode='login';
+function wSet(m){wMode=m;$('#wtL').classList.toggle('on',m=='login');$('#wtR').classList.toggle('on',m!='login');$('#wGo').textContent=m=='login'?'ACCEDI':'CREA ACCOUNT';$('#wMsg').textContent=''}
+function showWel(){$('#wel').style.display='flex'}
+function hideWel(){$('#wel').style.display='none'}
+$('#wtL').onclick=()=>wSet('login');$('#wtR').onclick=()=>wSet('register');
+$('#wGo').onclick=()=>cAuth(wMode=='login'?'login':'register','#wu','#wp','#wMsg');
+$('#wp').onkeydown=e=>{if(e.key=='Enter')$('#wGo').onclick()};
+$('#wGuest').onclick=()=>{S.guest=1;saveLocal();hideWel()};
 function ui(){
 const T=TH[S.theme],r=document.documentElement.style,M=MODES.find(m=>m.id==S.mode)||MODES[0],L=lvl(),ti=TITLES[Math.min(L.l-1,TITLES.length-1)];
 r.setProperty('--a',T[0]);r.setProperty('--b',T[1]);
-$('#avs').textContent=$('#pAv').textContent=S.av;$('#tn').textContent=S.name||'GIOCATORE';$('#tl').textContent='Liv. '+L.l+' · '+ti;
+paintAv($('#avs'));paintAv($('#pAv'));$('#avSum').textContent=S.photo?'Foto personale':S.av;$('#tn').textContent=S.name||'GIOCATORE';$('#tl').textContent='Liv. '+L.l+' · '+ti;
 $('#hIcon').textContent=M.i;$('#hName').textContent=M.n;$('#hDesc').textContent=M.d;
 $('#cBall').textContent=BM[S.ball].n;$('#cTh').textContent=T[5];$('#cBl').textContent=M.time?'∞':(M.balls||S.balls);$('#cDf').textContent=['Facile','Normale','Pro'][S.diff];
 $$('.seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v==S[s.dataset.k])));
-$$('.m').forEach(m=>m.classList.toggle('on',m.dataset.id==S.mode));$$('.mp').forEach(m=>m.classList.toggle('on',m.dataset.id==S.map));$('#cMap').textContent=(MAPS.find(m=>m.id==S.map)||MAPS[0]).n;$$('#maps canvas').forEach((c,i)=>prev(c,MAPS[i]));
+$$('.m').forEach(m=>m.classList.toggle('on',m.dataset.id==S.mode));$$('.mp').forEach(m=>m.classList.toggle('on',m.dataset.id==S.map));$('#cMap').textContent=(MAPS.find(m=>m.id==S.map)||MAPS[0]).n;const MP0=MAPS.find(m=>m.id==S.map)||MAPS[0];$('#sMp').textContent=MP0.i+' '+MP0.n;$('#sMd').textContent=M.i+' '+M.n;$('#sTh').textContent=T[5];$$('#maps canvas').forEach((c,i)=>prev(c,MAPS[i]));
 $$('#themes button').forEach(b=>b.classList.toggle('on',b.dataset.t==S.theme));
 $$('#avl button').forEach(b=>b.classList.toggle('on',b.dataset.a==S.av));
 $$('input[data-k]').forEach(i=>{const v=S[i.dataset.k];if(i.type=='checkbox')i.checked=!!v;else i.value=v});
@@ -431,9 +487,9 @@ $$('[data-ov]').forEach(o=>o.textContent=S[o.dataset.ov]);
 if(document.activeElement!==$('#name'))$('#name').value=S.name;
 $('#pLv').textContent='Livello '+L.l+' · '+ti;$('#xpb').style.width=Math.round(L.p*100)+'%';$('#xpt').textContent=Math.round(L.xp).toLocaleString('it')+' / '+L.hi.toLocaleString('it')+' XP';
 $('#stats').innerHTML=[['🎮','Partite',P.games],['🏆','Miglior punteggio',P.best.toLocaleString('it')],['⭐','Punti totali',P.tot.toLocaleString('it')],['<i class="cn"></i>','Monete guadagnate',P.coins.toLocaleString('it')],['⏱️','Tempo di gioco',Math.round(P.sec/60)+' min'],['🎱','Palline sbloccate',S.own.length+'/'+BALLS.length]].map(s=>`<div class="stat"><span>${s[0]}</span><b>${s[2]}</b><small>${s[1]}</small></div>`).join('');
-$('#tros').innerHTML=ACH.map(a=>{const on=P.ach.includes(a.id),cur=a.v?Math.min(a.v(),a.t):0;return `<div class="tro${on?' on':''}"><span>${a.i}</span><b>${a.n}</b><small>${a.d}</small>${a.t&&!on?`<div class="xp mini"><i style="width:${Math.round(cur/a.t*100)}%"></i></div><small>${fmt(cur)} / ${fmt(a.t)}</small>`:''}<em>${on?'✔ ':'+'}${fmt(a.r)} <i class="cn"></i></em></div>`}).join('');$('#trn').textContent=P.ach.length+'/'+ACH.length;
+trRender();$('#trn').textContent=P.ach.length+'/'+ACH.length;
 $('#rec').innerHTML=MODES.map(m=>`<div><span>${m.i} ${m.n}</span><b>${(HS[m.id]||0).toLocaleString('it')}</b></div>`).join('')+MAPS.map(m=>`<div><span>${m.i} ${m.n} (mappa)</span><b>${(HS['m_'+m.id]||0).toLocaleString('it')}</b></div>`).join('');
-$('#shop').innerHTML=BALLS.map(b=>{const o=S.own.includes(b.id),e=S.ball==b.id;return `<div class="bc${e?' eq':''}${!o&&S.coins<b.p?' no':''}" data-id="${b.id}"><i class="bp" style="background:radial-gradient(circle at 32% 30%,${b.c[0]},${b.c[1]} 45%,${b.c[2]})"></i><b>${b.n}</b><small>${b.d}</small><em>${e?'✔ EQUIPAGGIATA':o?'EQUIPAGGIA':'<i class="cn"></i> '+fmt(b.p)}</em></div>`}).join('');
+shopRender();
 $('#stw').style.display=STORE_OK?'none':'block';dqRender();evRender();acRender();chk();wk();save()}
 ui();
 // ---------- audio ----------
@@ -548,7 +604,7 @@ const b0=G.bs[0],sw=b0?(b0.x-200)/200*3:0,sh=G.shake;
 $('#tbl').style.transform=`rotateX(${S.tilt}deg) rotateY(${sw}deg) translate(${(Math.random()-.5)*sh}px,${(Math.random()-.5)*sh}px)`;G.shake*=.85;
 $('#hN').textContent=S.name;$('#hM').textContent=G.M.n+' · '+MP.n;$('#hS').textContent=Math.round(G.sc).toLocaleString('it');$('#hCh').textContent=G.ch?'🎯 '+G.ch.n+': '+fmt(G.ch.s)+(G.sc>G.ch.s?' ✅':''):(GO&&GO.k=='ev'?GO.i+' '+GO.n:'');$('#hB').textContent=G.M.time?'∞':'●'.repeat(Math.max(G.left,0));$('#hX').textContent='x'+G.mult;$('#hT').textContent=G.M.time?Math.ceil(G.time/60)+'s':''}
 function run(g){let last=performance.now(),acc=0;(function f(t){if(G!==g)return;requestAnimationFrame(f);acc=Math.min(acc+(t-last)/16.667,4);last=t;while(acc>=1){acc--;if(!g.paused&&!g.over)update()}draw()})(last)}
-function fit(){const st=$('#stage'),s=Math.min(st.clientWidth/W,st.clientHeight/H)*.95,t=$('#tbl');if(s>0){t.style.width=W*s+'px';t.style.height=H*s+'px'}}
+function fit(){const st=$('#stage'),s=Math.min(st.clientWidth/W,st.clientHeight/H)*((S.zoom||104)/100),t=$('#tbl');if(s>0){t.style.width=W*s+'px';t.style.height=H*s+'px'}}
 addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,200));if(window.ResizeObserver)new ResizeObserver(fit).observe($('#stage'));
 // ---------- controls ----------
 const KL=['ArrowLeft','a','z','A','Z'],KR=['ArrowRight','d','m','D','M'];
@@ -570,5 +626,5 @@ $('#inst').onclick=async()=>{if(dip){dip.prompt();try{await dip.userChoice}catch
 try{const sa=(typeof matchMedia!='undefined'&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
 if(sa)$('#instT').textContent='App già installata ✅';else if(/iphone|ipad|ipod/i.test(navigator.userAgent||''))$('#instT').innerHTML='Su iPhone: tocca <b>Condividi</b> (il quadrato con la freccia) e poi <b>Aggiungi alla schermata Home</b>.';
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('/sw.js').catch(()=>{})}catch(e){}
-chBoot().catch(()=>{});cInit().catch(()=>{});
+if(!S.tok&&!S.guest&&!/[?&]c=/.test(location.search||''))showWel();chBoot().catch(()=>{});cInit().catch(()=>{});
 </script></body></html>
