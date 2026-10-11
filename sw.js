@@ -1,5 +1,5 @@
 // Service worker di DRUMS PINBALL: installazione, gioco senza rete e notifiche push
-const V = 'drums-v12';
+const V = 'drums-v13';
 const CORE = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(V).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
