@@ -68,11 +68,20 @@ const roundFields = (kind, val, now) => {
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   const fail = (c, m) => res.status(c).json({ error: m });
+  if (req.method === 'GET') { // pagina di diagnosi: apri /api/match nel browser
+    const out = { ok: true, funzione: 'attiva', variabili: { url: !!URL_, token: !!TOK } };
+    if (URL_ && TOK) {
+      try { const r = await redis([['PING']]); out.database = r[0].result === 'PONG' ? 'ok' : 'risposta inattesa'; }
+      catch (e) { out.database = 'errore: ' + String(e.message).slice(0, 80); }
+    }
+    return res.status(200).json(out);
+  }
   if (req.method !== 'POST') return fail(405, 'Metodo non valido');
-  if (!URL_ || !TOK) return fail(503, 'Online non disponibile al momento');
+  if (!URL_ || !TOK) { console.error('match: variabili del database mancanti'); return fail(503, 'Online non disponibile al momento'); }
   try {
     const b = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     const a = b.a, pid = String(b.pid || ''), now = Date.now();
+    console.log('match', a);
     if (!PID.test(pid)) return fail(400, 'Giocatore non valido');
     const name = clean(b.name), av = AVS.includes(b.av) ? b.av : '🥁';
     const ip = String((req.headers['x-forwarded-for'] || 'x').split(',')[0]).trim().slice(0, 45);
@@ -176,6 +185,7 @@ module.exports = async function handler(req, res) {
     }
     return fail(400, 'Richiesta non valida');
   } catch (e) {
+    console.error('match errore', e && e.message);
     return fail(500, 'Errore del server');
   }
 };

@@ -222,6 +222,7 @@ details.ac>summary .aci{width:34px;height:34px;display:grid;place-items:center;b
 <div class="row" style="margin-top:14px"><input id="onCode" class="in" placeholder="CODICE" maxlength="4" autocapitalize="characters" style="text-transform:uppercase"><button class="btn s" id="onJoin">ENTRA</button></div>
 </div></details>
 <button class="wg" id="onBot">🤖 Allenamento contro un bot</button>
+<button class="wg" id="onDiag">🔧 Controlla la connessione</button>
 <button class="wg" id="onClose">Indietro</button>
 </div>
 <div id="onLobby" style="display:none">
@@ -588,7 +589,7 @@ const pickMap=()=>MAPS[Math.floor(Math.random()*MAPS.length)].id;
 async function onApi(a,b){if(OPN&&OPN.bot)return botApi(a,b||{});
 let r,d={},t0=Date.now();
 try{r=await fetch(ONU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({a,pid:S.pid,name:S.name,av:S.av},b||{}))})}catch(e){throw new Error('Servizio non raggiungibile: controlla la connessione')}
-try{d=await r.json()}catch(e){}if(!r.ok){const er=new Error(d.error||'Online non disponibile al momento');er.code=r.status;throw er}
+try{d=await r.json()}catch(e){}if(!r.ok){const er=new Error((d.error||'Online non disponibile al momento')+' (codice '+r.status+')');er.code=r.status;throw er}
 if(d.now){const off=d.now-(t0+(Date.now()-t0)/2);srvOff=srvInit?srvOff*.6+off*.4:off;srvInit=1}return d}
 function onShow(v){$('#onMenu').style.display=v=='menu'?'':'none';$('#onLobby').style.display=v=='lobby'?'':'none'}
 function onOpen(){$('#onl').style.display='flex';onShow('menu');onMsg('')}
@@ -602,6 +603,13 @@ async function onJoin(c){c=String(c||'').trim().toUpperCase();if(!/^[A-Z0-9]{4}$
 $('#onJoin').onclick=()=>onJoin($('#onCode').value);
 $('#onFind').onclick=()=>{onStop();onShow('lobby');$('#onCodeBox').style.display='none';$('#onStart').style.display='none';$('#onBotB').style.display='none';$('#lN1').textContent=S.name;$('#lAv1').textContent=S.av;$('#lN2').textContent='cerco…';$('#lAv2').textContent='🔎';$('#onInfo').textContent='Cerco un avversario…';OPN={find:1,t:0};onTmr=setInterval(onFindTick,1500);onFindTick()};
 async function onFindTick(){if(!OPN||!OPN.find)return;try{const d=await onApi('find');if(!OPN||!OPN.find)return;if(d.code){OPN={code:d.code,slot:d.slot};onRoom();return}OPN.t++;$('#onInfo').textContent='Cerco un avversario… '+Math.round(OPN.t*1.5)+'s';if(OPN.t>=8)$('#onBotB').style.display=''}catch(e){onMsg(e.message)}}
+$('#onDiag').onclick=async()=>{onMsg('Controllo in corso…');try{const r=await fetch(ONU+'?diag='+Date.now());let d={};try{d=await r.json()}catch(e){}
+if(r.status==404)return onMsg('❌ Il file api/match.js non è sul sito (errore 404). Caricalo su GitHub dentro la cartella api, poi aspetta che Vercel finisca (Ready).');
+if(r.status==405)return onMsg("❌ Sul sito c'è una versione vecchia di api/match.js. Sostituiscila con quella nuova e aspetta il Redeploy.");
+if(!r.ok&&!d.variabili)return onMsg('❌ Il server ha risposto con un errore ('+r.status+').');
+if(!d.variabili||!d.variabili.url||!d.variabili.token)return onMsg("❌ Il server c'è ma non vede il database: mancano KV_REST_API_URL o KV_REST_API_TOKEN. Controllale su Vercel e fai Redeploy.");
+if(d.database!=='ok')return onMsg("❌ Il server c'è ma non riesce a parlare col database ("+(d.database||'?')+').');
+onMsg('✅ Tutto a posto: server online e database funzionano.')}catch(e){onMsg('❌ Nessuna connessione a internet o al sito.')}};
 function onBotStart(kind,val,map){onStop();OPN={code:'BOT',slot:1,bot:1};botNew(kind||'time',val||90,map||pickMap());onRoom()}
 $('#onBot').onclick=()=>onBotStart($('#onKind').value,+$('#onVal').value,$('#onMap').value);
 $('#onBotB').onclick=()=>onBotStart('time',90,pickMap());
