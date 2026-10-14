@@ -7,6 +7,29 @@ const AVS = ['🥁','🎸','🎧','🚀','👾','🦄','🔥','👑','🐉','�
 const CH = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const PID = /^[a-z0-9]{8,24}$/;
 const RACE_CAP = 180000; // una Corsa dura al massimo 3 minuti
+const BUILD_MS = 110000; // tempo per costruire la mappa dell'avversario
+
+// Mappa creata da un giocatore: [['b'|'p'|'t', x, y], ['w', x, y, dir], ['r', x1, y1, x2, y2]]
+function cleanItems(arr) {
+  if (!Array.isArray(arr) || arr.length > 24) return null;
+  const out = [];
+  for (const it of arr) {
+    if (!Array.isArray(it) || typeof it[0] !== 'string') return null;
+    const t = it[0];
+    if (t === 'r') {
+      if (it.length !== 5) return null;
+      const v = it.slice(1).map(Number);
+      if (v.some((x) => !Number.isFinite(x))) return null;
+      if (v[0] < 20 || v[0] > 380 || v[2] < 20 || v[2] > 380 || v[1] < 100 || v[1] > 650 || v[3] < 100 || v[3] > 650) return null;
+      out.push(['r', ...v.map(Math.round)]);
+    } else if (['b', 'p', 't', 'w'].includes(t)) {
+      const x = Number(it[1]), y = Number(it[2]);
+      if (!(x >= 20 && x <= 380 && y >= 100 && y <= 650)) return null;
+      out.push(t === 'w' ? [t, Math.round(x), Math.round(y), Number(it[3]) === -1 ? -1 : 1] : [t, Math.round(x), Math.round(y)]);
+    } else return null;
+  }
+  return out;
+}
 
 async function redis(cmds) {
   const r = await fetch(URL_ + '/pipeline', {
@@ -27,6 +50,8 @@ function snap(o, slot, now) {
   const op = slot === 1 ? 2 : 1, has = !!o['p' + op], u = +o['u' + op] || 0;
   return {
     now, code: o.c, slot, st: o.st, kind: o.k, val: +o.v, map: o.m, startAt: +o.sa || 0, endAt: +o.ea || 0, w: +o.w || 0,
+    be: +o.be || 0, ready: { me: +o['r' + slot] || 0, op: +o['r' + op] || 0 },
+    omap: (o.st === 'play' || o.st === 'done') && o.k === 'build' ? (o['m' + op] || '[]') : null,
     me: { n: o['n' + slot], a: o['a' + slot], s: +o['s' + slot] || 0, f: +o['f' + slot] || 0 },
     op: has ? { n: o['n' + op], a: o['a' + op], s: +o['s' + op] || 0, f: +o['f' + op] || 0, off: u && now - u > 10000 ? 1 : 0, left: +o['x' + op] || 0 } : null,
     again: { me: +o['g' + slot] || 0, op: +o['g' + op] || 0 }
@@ -61,9 +86,12 @@ async function newRoom(fields) {
   throw new Error('codici esauriti');
 }
 const roundFields = (kind, val, now) => {
+  const base = { s1: 0, s2: 0, f1: 0, f2: 0, w: 0, g1: 0, g2: 0 };
+  if (kind === 'build') return Object.assign(base, { st: 'build', be: now + BUILD_MS, sa: 0, ea: 0, r1: 0, r2: 0, m1: '', m2: '' });
   const sa = now + 5000;
-  return { st: 'play', sa, ea: sa + (kind === 'race' ? RACE_CAP : val * 1000), s1: 0, s2: 0, f1: 0, f2: 0, w: 0, g1: 0, g2: 0 };
+  return Object.assign(base, { st: 'play', sa, ea: sa + (kind === 'race' ? RACE_CAP : val * 1000) });
 };
+const toPlay = (o, now) => { const sa = now + 5000; return { st: 'play', sa, ea: sa + (+o.v) * 1000, m1: o.m1 || '[]', m2: o.m2 || '[]' }; };
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -95,7 +123,7 @@ module.exports = async function handler(req, res) {
 
     if (a === 'create') {
       if (await limited('c')) return fail(429, 'Troppe richieste, riprova tra poco');
-      const kind = b.kind === 'race' ? 'race' : 'time';
+      const kind = b.kind === 'race' ? 'race' : b.kind === 'build' ? 'build' : 'time';
       const val = kind === 'race' ? ([10000, 30000, 60000].includes(+b.val) ? +b.val : 30000) : ([60, 90, 120].includes(+b.val) ? +b.val : 90);
       const map = MAPS.includes(b.map) ? b.map : 'arena';
       const c = await newRoom({ k: kind, v: val, m: map, p1: pid, n1: name, a1: av, s1: 0, f1: 0, u1: now, st: 'wait', w: 0 });
@@ -155,10 +183,20 @@ module.exports = async function handler(req, res) {
     if (a === 'start') {
       if (slot !== 1) return fail(403, 'Solo chi ha creato la stanza può avviare');
       if (!o.p2) return fail(409, "Manca l'avversario");
-      if (o.st === 'play' && +o.ea > now) return res.status(200).json(snap(o, slot, now));
+      if ((o.st === 'play' && +o.ea > now) || (o.st === 'build' && +o.be > now)) return res.status(200).json(snap(o, slot, now));
       const f = roundFields(o.k, +o.v, now);
       await redis([['HSET', rk(code), ...Object.entries(f).flat()], ['EXPIRE', rk(code), 1800]]);
       return res.status(200).json(snap(Object.assign({}, o, f), slot, now));
+    }
+    if (a === 'map') {
+      if (o.k !== 'build' || o.st !== 'build') return fail(409, 'Non è il momento di costruire');
+      const items = cleanItems(b.items);
+      if (!items || items.filter((i) => i[0] === 'b' || i[0] === 't').length < 3) return fail(400, 'Servono almeno 3 tra bumper e bersagli');
+      const upd = { ['m' + slot]: JSON.stringify(items), ['r' + slot]: 1 };
+      const n = Object.assign({}, o, upd);
+      if (+n.r1 && +n.r2) { const f = toPlay(n, now); Object.assign(upd, f); Object.assign(n, f); }
+      await redis([['HSET', rk(code), ...Object.entries(upd).flat()]]);
+      return res.status(200).json(snap(n, slot, now));
     }
     if (a === 'again') {
       const upd = { ['g' + slot]: 1 };
@@ -169,13 +207,14 @@ module.exports = async function handler(req, res) {
     }
     if (a === 'upd') {
       const n = Object.assign({}, o), upd = { ['u' + slot]: now };
-      if (o.st === 'play') {
+      if (o.st === 'build' && now >= (+o.be) + 2500) { const f = toPlay(o, now); Object.assign(upd, f); Object.assign(n, f); }
+      if (n.st === 'play') {
         const prev = +o['s' + slot] || 0, dt = Math.max(0, now - (+o['u' + slot] || now));
         const max = prev + 40000 + 8 * dt; // limite anti-trucchi: crescita massima plausibile
-        const inGame = now >= (+o.sa) - 500 && now <= (+o.ea) + 6000;
+        const inGame = now >= (+n.sa) - 500 && now <= (+n.ea) + 6000;
         const ns = inGame ? Math.min(Math.max(prev, Math.floor(+b.score || 0)), max) : prev;
         upd['s' + slot] = ns;
-        if (b.fin && (now >= (+o.ea) - 3000 || (o.k === 'race' && ns >= +o.v))) upd['f' + slot] = 1;
+        if (b.fin && (now >= (+n.ea) - 3000 || (o.k === 'race' && ns >= +o.v))) upd['f' + slot] = 1;
       }
       Object.assign(n, upd);
       const w = decide(n, now);

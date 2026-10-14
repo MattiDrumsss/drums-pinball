@@ -4,6 +4,9 @@ const TOK = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKE
 const MODES = ['classic','multi','time','moon','rush','rhythm','rain','sprint','wave','wind','chaos','turbo','dark','mirror','surv'];
 const AVS = ['🥁','🎸','🎧','🚀','👾','🦄','🔥','👑','🐉','🤖','⚡','🎯'];
 const MAX_SCORE = 2000000000;
+// settimana (da lunedì a domenica, in UTC): numero progressivo e fine
+const weekOf = (ms) => Math.floor((Math.floor(ms / 864e5) + 3) / 7);
+const weekEnd = (w) => ((w + 1) * 7 - 3) * 864e5;
 
 async function redis(cmds) {
   const r = await fetch(URL_ + '/pipeline', {
@@ -22,13 +25,15 @@ module.exports = async function handler(req, res) {
     if (req.method === 'GET') {
       const mode = String(req.query.mode || 'classic');
       if (!MODES.includes(mode)) return res.status(400).json({ error: 'modalità non valida' });
-      const [z] = await redis([['ZREVRANGE', 'lb:' + mode, 0, 49, 'WITHSCORES']]);
+      const week = String(req.query.period || '') === 'week', wk = weekOf(Date.now());
+      const key = week ? 'lbw:' + wk + ':' + mode : 'lb:' + mode;
+      const [z, cnt] = await redis([['ZREVRANGE', key, 0, 49, 'WITHSCORES'], ['ZCARD', key]]);
       const arr = z.result || [];
       const ids = [], scores = [];
       for (let i = 0; i < arr.length; i += 2) { ids.push(arr[i]); scores.push(Number(arr[i + 1])); }
       let names = [];
       if (ids.length) { const [h] = await redis([['HMGET', 'lbn', ...ids]]); names = h.result || []; }
-      return res.status(200).json({ mode, top: ids.map((id, i) => ({ id, name: names[i] || '🥁|???', score: scores[i] })) });
+      return res.status(200).json({ mode, period: week ? 'week' : 'all', n: Number(cnt.result || 0), weekEnd: weekEnd(wk), top: ids.map((id, i) => ({ id, name: names[i] || '🥁|???', score: scores[i] })) });
     }
     if (req.method === 'POST') {
       const b = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
@@ -37,7 +42,8 @@ module.exports = async function handler(req, res) {
       const av = AVS.includes(b.av) ? b.av : '🥁';
       if (!/^[a-z0-9]{8,24}$/.test(String(b.pid)) || !MODES.includes(b.mode) || !Number.isFinite(score) || score < 1 || score > MAX_SCORE)
         return res.status(400).json({ error: 'dati non validi' });
-      await redis([['ZADD', 'lb:' + b.mode, 'GT', score, b.pid], ['HSET', 'lbn', b.pid, av + '|' + name]]);
+      const wkey = 'lbw:' + weekOf(Date.now()) + ':' + b.mode;
+      await redis([['ZADD', 'lb:' + b.mode, 'GT', score, b.pid], ['ZADD', wkey, 'GT', score, b.pid], ['EXPIRE', wkey, 1209600], ['HSET', 'lbn', b.pid, av + '|' + name]]);
       return res.status(200).json({ ok: true });
     }
     res.setHeader('Allow', 'GET, POST');
