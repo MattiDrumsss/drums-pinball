@@ -8,6 +8,11 @@ const CH = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const PID = /^[a-z0-9]{8,24}$/;
 const RACE_CAP = 180000; // una Corsa dura al massimo 3 minuti
 const BUILD_MS = 110000; // tempo per costruire la mappa dell'avversario
+const NEXT_MS = 6000; // pausa tra un round e il successivo
+const KINDS = ['time', 'race', 'build', 'sab', 'tug'];
+const ATKS = ['fog', 'wind', 'heavy', 'flip']; // attacchi della modalità Sabotaggio
+const ENERGY = 1500; // punti per ogni carica di energia
+const durOf = (k, v) => (k === 'race' || k === 'tug' ? RACE_CAP : v * 1000);
 
 // Mappa creata da un giocatore: [['b'|'p'|'t', x, y], ['w', x, y, dir], ['r', x1, y1, x2, y2]]
 function cleanItems(arr) {
@@ -54,7 +59,12 @@ function snap(o, slot, now) {
     omap: (o.st === 'play' || o.st === 'done') && o.k === 'build' ? (o['m' + op] || '[]') : null,
     me: { n: o['n' + slot], a: o['a' + slot], s: +o['s' + slot] || 0, f: +o['f' + slot] || 0 },
     op: has ? { n: o['n' + op], a: o['a' + op], s: +o['s' + op] || 0, f: +o['f' + op] || 0, off: u && now - u > 10000 ? 1 : 0, left: +o['x' + op] || 0 } : null,
-    again: { me: +o['g' + slot] || 0, op: +o['g' + op] || 0 }
+    again: { me: +o['g' + slot] || 0, op: +o['g' + op] || 0 },
+    rt: +o.rt || 1, rd: +o.rd || 1, sw: +o.sw || 0,
+    hist: (() => { try { return JSON.parse(o.h || '[]'); } catch (e) { return []; } })(),
+    cw: { me: +o['c' + slot] || 0, op: +o['c' + op] || 0 }, tot: { me: +o['t' + slot] || 0, op: +o['t' + op] || 0 },
+    nextAt: o.st === 'done' && (+o.rd || 1) < (+o.rt || 1) ? (+o.da || 0) + NEXT_MS : 0,
+    en: { earned: Math.floor((+o['s' + slot] || 0) / ENERGY), used: +o['au' + slot] || 0 }
   };
 }
 // 0 = partita ancora aperta, 1/2 = vince quel giocatore, 3 = pareggio
@@ -62,6 +72,12 @@ function decide(o, now) {
   if (+o.w) return +o.w;
   if (o.st !== 'play') return 0;
   const s1 = +o.s1 || 0, s2 = +o.s2 || 0, v = +o.v, ea = +o.ea;
+  if (o.k === 'tug') {
+    const d = s1 - s2;
+    if (Math.abs(d) >= v) return d > 0 ? 1 : 2;
+    if (now >= ea) return s1 > s2 ? 1 : s2 > s1 ? 2 : 3;
+    return 0;
+  }
   if (o.k === 'race') {
     const a = s1 >= v, b = s2 >= v;
     if (a && b) return s1 >= s2 ? 1 : 2;
@@ -86,11 +102,14 @@ async function newRoom(fields) {
   throw new Error('codici esauriti');
 }
 const roundFields = (kind, val, now) => {
-  const base = { s1: 0, s2: 0, f1: 0, f2: 0, w: 0, g1: 0, g2: 0 };
+  // inizio di una nuova serie di round (azzera anche classifica della serie, attacchi ed energia)
+  const base = { s1: 0, s2: 0, f1: 0, f2: 0, w: 0, g1: 0, g2: 0, rd: 1, c1: 0, c2: 0, t1: 0, t2: 0, h: '[]', sw: 0, ev1: '[]', ev2: '[]', au1: 0, au2: 0, ak1: 0, ak2: 0 };
   if (kind === 'build') return Object.assign(base, { st: 'build', be: now + BUILD_MS, sa: 0, ea: 0, r1: 0, r2: 0, m1: '', m2: '' });
   const sa = now + 5000;
-  return Object.assign(base, { st: 'play', sa, ea: sa + (kind === 'race' ? RACE_CAP : val * 1000) });
+  return Object.assign(base, { st: 'play', sa, ea: sa + durOf(kind, val) });
 };
+// round successivo della stessa serie (le mappe costruite si riusano)
+const nextRound = (o, now) => { const sa = now + 5000; return { rd: (+o.rd || 1) + 1, st: 'play', sa, ea: sa + durOf(o.k, +o.v), s1: 0, s2: 0, f1: 0, f2: 0, w: 0, g1: 0, g2: 0, ev1: '[]', ev2: '[]', au1: 0, au2: 0 }; };
 const toPlay = (o, now) => { const sa = now + 5000; return { st: 'play', sa, ea: sa + (+o.v) * 1000, m1: o.m1 || '[]', m2: o.m2 || '[]' }; };
 
 module.exports = async function handler(req, res) {
@@ -123,10 +142,11 @@ module.exports = async function handler(req, res) {
 
     if (a === 'create') {
       if (await limited('c')) return fail(429, 'Troppe richieste, riprova tra poco');
-      const kind = b.kind === 'race' ? 'race' : b.kind === 'build' ? 'build' : 'time';
-      const val = kind === 'race' ? ([10000, 30000, 60000].includes(+b.val) ? +b.val : 30000) : ([60, 90, 120].includes(+b.val) ? +b.val : 90);
+      const kind = KINDS.includes(b.kind) ? b.kind : 'time';
+      const val = kind === 'race' ? ([10000, 30000, 60000].includes(+b.val) ? +b.val : 30000) : kind === 'tug' ? ([5000, 10000, 20000].includes(+b.val) ? +b.val : 10000) : ([60, 90, 120].includes(+b.val) ? +b.val : 90);
+      const rt = [1, 3, 5, 7].includes(+b.rounds) ? +b.rounds : 1;
       const map = MAPS.includes(b.map) ? b.map : 'arena';
-      const c = await newRoom({ k: kind, v: val, m: map, p1: pid, n1: name, a1: av, s1: 0, f1: 0, u1: now, st: 'wait', w: 0 });
+      const c = await newRoom({ k: kind, v: val, m: map, rt, rd: 1, c1: 0, c2: 0, t1: 0, t2: 0, h: '[]', sw: 0, p1: pid, n1: name, a1: av, s1: 0, f1: 0, u1: now, st: 'wait', w: 0 });
       return res.status(200).json({ code: c, slot: 1, now });
     }
     if (a === 'join') {
@@ -159,7 +179,7 @@ module.exports = async function handler(req, res) {
         if (!(await one(['SET', 'mm:as:' + pid, 'pending', 'NX', 'EX', 180]))) { await one(['DEL', 'mm:as:' + op]); break; }
         let info = {}; try { info = JSON.parse(await one(['GET', 'mm:info:' + op]) || '{}'); } catch (e) {}
         const map = MAPS[Math.floor(Math.random() * MAPS.length)];
-        const c = await newRoom(Object.assign({ k: 'time', v: 90, m: map, p1: op, n1: clean(info.n), a1: AVS.includes(info.a) ? info.a : '🥁', p2: pid, n2: name, a2: av, u1: now, u2: now, x1: 0, x2: 0 }, roundFields('time', 90, now)));
+        const c = await newRoom(Object.assign({ k: 'time', v: 90, m: map, p1: op, n1: clean(info.n), a1: AVS.includes(info.a) ? info.a : '🥁', p2: pid, n2: name, a2: av, u1: now, u2: now, x1: 0, x2: 0, rt: 1 }, roundFields('time', 90, now)));
         await redis([['SET', 'mm:as:' + op, c + ':1', 'EX', 180], ['SET', 'mm:as:' + pid, c + ':2', 'EX', 180]]);
         return res.status(200).json({ code: c, slot: 2, now });
       }
@@ -198,18 +218,33 @@ module.exports = async function handler(req, res) {
       await redis([['HSET', rk(code), ...Object.entries(upd).flat()]]);
       return res.status(200).json(snap(n, slot, now));
     }
+    if (a === 'atk') {
+      if (o.k !== 'sab' || o.st !== 'play' || now < +o.sa || now > (+o.ea) + 500) return fail(409, 'Non si può attaccare adesso');
+      const type = String(b.type);
+      if (!ATKS.includes(type)) return fail(400, 'Attacco non valido');
+      const used = +o['au' + slot] || 0;
+      if (Math.floor((+o['s' + slot] || 0) / ENERGY) - used < 1) return fail(409, 'Non hai energia: fai più punti!');
+      if (now - (+o['ak' + slot] || 0) < 2000) return fail(429, 'Aspetta un attimo');
+      let q = []; try { q = JSON.parse(o['ev' + opSlot] || '[]'); } catch (e) {}
+      q.push({ id: (now % 100000) * 10 + Math.floor(Math.random() * 10), t: type });
+      await redis([['HSET', rk(code), 'ev' + opSlot, JSON.stringify(q.slice(-6)), 'au' + slot, used + 1, 'ak' + slot, now]]);
+      return res.status(200).json(Object.assign(snap(Object.assign({}, o, { ['au' + slot]: used + 1 }), slot, now), { evs: [] }));
+    }
     if (a === 'again') {
       const upd = { ['g' + slot]: 1 };
       let n = Object.assign({}, o, upd);
-      if (+n.g1 && +n.g2 && (o.st === 'done' || +o.w)) { Object.assign(n, roundFields(o.k, +o.v, now)); Object.assign(upd, roundFields(o.k, +o.v, now)); }
+      if (+n.g1 && +n.g2 && (o.st === 'done' || +o.w) && (+o.rd || 1) >= (+o.rt || 1)) { Object.assign(n, roundFields(o.k, +o.v, now)); Object.assign(upd, roundFields(o.k, +o.v, now)); }
       await redis([['HSET', rk(code), ...Object.entries(upd).flat()]]);
       return res.status(200).json(snap(n, slot, now));
     }
     if (a === 'upd') {
       const n = Object.assign({}, o), upd = { ['u' + slot]: now };
       if (o.st === 'build' && now >= (+o.be) + 2500) { const f = toPlay(o, now); Object.assign(upd, f); Object.assign(n, f); }
+      if (o.st === 'done' && (+o.rd || 1) < (+o.rt || 1) && now >= (+o.da || 0) + NEXT_MS) { const f = nextRound(o, now); Object.assign(upd, f); Object.assign(n, f); }
+      let evs = []; try { evs = JSON.parse(o['ev' + slot] || '[]'); } catch (e) {}
+      if (evs.length && n.st === 'play') upd['ev' + slot] = '[]'; else evs = [];
       if (n.st === 'play') {
-        const prev = +o['s' + slot] || 0, dt = Math.max(0, now - (+o['u' + slot] || now));
+        const prev = +n['s' + slot] || 0, dt = Math.max(0, now - (+o['u' + slot] || now));
         const max = prev + 40000 + 8 * dt; // limite anti-trucchi: crescita massima plausibile
         const inGame = now >= (+n.sa) - 500 && now <= (+n.ea) + 6000;
         const ns = inGame ? Math.min(Math.max(prev, Math.floor(+b.score || 0)), max) : prev;
@@ -218,9 +253,17 @@ module.exports = async function handler(req, res) {
       }
       Object.assign(n, upd);
       const w = decide(n, now);
-      if (w && !(+o.w)) { upd.w = w; upd.st = 'done'; Object.assign(n, { w, st: 'done' }); }
+      if (w && !(+n.w)) {
+        upd.w = w; upd.st = 'done'; Object.assign(n, { w, st: 'done' });
+        let h = []; try { h = JSON.parse(n.h || '[]'); } catch (e) {}
+        h.push([+n.s1 || 0, +n.s2 || 0, w]);
+        const c1 = (+n.c1 || 0) + (w === 1 ? 1 : 0), c2 = (+n.c2 || 0) + (w === 2 ? 1 : 0), t1 = (+n.t1 || 0) + (+n.s1 || 0), t2 = (+n.t2 || 0) + (+n.s2 || 0);
+        Object.assign(upd, { h: JSON.stringify(h), c1, c2, t1, t2, da: now });
+        if ((+n.rd || 1) >= (+n.rt || 1)) upd.sw = c1 > c2 ? 1 : c2 > c1 ? 2 : t1 > t2 ? 1 : t2 > t1 ? 2 : 3;
+        Object.assign(n, upd);
+      }
       await redis([['HSET', rk(code), ...Object.entries(upd).flat()]]);
-      return res.status(200).json(snap(n, slot, now));
+      return res.status(200).json(Object.assign(snap(n, slot, now), { evs }));
     }
     return fail(400, 'Richiesta non valida');
   } catch (e) {
